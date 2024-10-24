@@ -1,14 +1,10 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 const { title } = require('process');
-const file = 'descarga.txt';
 const args = process.argv.slice(2);
 
-console.log(args);
 const MARKDOWN_URL = args[0];
-
 let titulo = args [1];
-// Cambia la URL a la correcta para descargar el archivo Markdown
 
 // Función asíncrona para descargar el Markdown
 async function descargarMarkdown() {
@@ -18,10 +14,7 @@ async function descargarMarkdown() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const markdown = await response.text();
-    // fs.writeFileSync(file, markdown);
-    // console.log('Se descargó el txt');
     
-    // const convertir = fs.readFileSync(file, 'utf-8'); // Se lee el archivo   
     convertiraJson(markdown);
   } catch (error) {
     console.error('Error:', error);
@@ -40,14 +33,8 @@ function convertiraJson(markdown) {
   const correctAnswerRegex = /- \[x\] (.+)/g; // Respuesta correcta
   const incorrectAnswerRegex = /- \[ \] (.+)/g; // Respuestas erróneas
 
-  // Obtener todos los títulos del archivo
-  // const titles = [];
-  // while ((match = titleRegex.exec(markdown)) !== null) {
-  //   titles.push(match[1].trim()); // Guardar el título
-  // }
-  // titulo=titles;
+ 
   // Reiniciar la búsqueda de preguntas
-  let titleIndex = -1; // Índice para asociar cada pregunta con su título
   
   // Procesar cada bloque de preguntas
   while ((match = questionRegex.exec(markdown)) !== null) {
@@ -60,15 +47,11 @@ function convertiraJson(markdown) {
     // Respuestas
     const correctAnswers = [...questionBlock.matchAll(correctAnswerRegex)].map(m => m[1]);
     const incorrectAnswers = [...questionBlock.matchAll(incorrectAnswerRegex)].map(m => m[1]);
-    // Incrementar el índice del título para cada pregunta
-    // if (questions.length % 1 === 0 && titleIndex < titles.length - 1) {
-    //   titleIndex++;
-    // };
+   
     const answersOptions = getAnswersOptions(correctAnswers, incorrectAnswers);
     
     // Crear el objeto
     const question = {
-      // title: titles[titleIndex], 
       question: questionText,
       codeExamples: codeBlocks,
       answersOptions
@@ -87,12 +70,7 @@ function convertiraJson(markdown) {
   // Guardar el array de objetos en un archivo JSON
   fs.writeFileSync(`ListaJson/${titulo}.json`, JSON.stringify(questions, null, 2));
   console.log(`Se convirtió a JSON y se guardó en ${titulo}.json`);
-  // try {
-  //   fs.unlinkSync(file);
-  //   console.log(`${file} eliminado`);
-  // } catch (err) {
-  //   console.error('Error al eliminar ', err);
-  // }
+  
 }
 
 // Ejecutar la descarga y conversión
