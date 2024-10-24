@@ -65,10 +65,15 @@ function convertiraJson(markdown) {
     const answersOptions = incorrectAnswers.map( a => {return{answer: a, isCorrect: false}}).concat(correctAnswers.map( a => {return{answer: a, isCorrect: true}}));
 
     return answersOptions
-  }
+  };
+
+  const document =[{
+    urlFont: MARKDOWN_URL,
+    questions
+  }]
 
   // Guardar el array de objetos en un archivo JSON
-  fs.writeFileSync(`ListaJson/${titulo}.json`, JSON.stringify(questions, null, 2));
+  fs.writeFileSync(`ListaJson/${titulo}.json`, JSON.stringify(document, null, 2));
   console.log(`Se convirtió a JSON y se guardó en ${titulo}.json`);
   
 }
