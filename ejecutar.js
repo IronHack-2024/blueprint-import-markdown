@@ -1,8 +1,9 @@
+//SCRIPT para visualizar json en un endopoint localhost puerto 3000
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const eje = express();
-const archivoJson ='ListaJson/Angular.json';
+const archivoJson ='ListaJson/javascript.json';
 
 eje.set('view engine', 'ejs'); 
 eje.set('views', path.join(__dirname, 'views')); 

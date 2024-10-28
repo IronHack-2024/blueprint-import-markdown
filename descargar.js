@@ -46,7 +46,7 @@ function convertiraJson(markdown) {
     let questionText = questionBlock.replace(/#### Q\d+\s*./, '').split('\n')[0].trim(); // Quitar la primera parte
     
     // Bloques de código
-    const codeExampless = [...questionBlock.matchAll(codeExamplesRegex)].map(m => m[1]); // Bloque de ejercicios en preguntas
+    const codeExamples = [...questionBlock.matchAll(codeExamplesRegex)].map(m => m[1]); // Bloque de ejercicios en preguntas
     // Opciones
     const correctAnswers = [...questionBlock.matchAll(correctAnswerRegex)].map(m => m[1]);
     const incorrectAnswers = [...questionBlock.matchAll(incorrectAnswerRegex)].map(m => m[1]);
@@ -57,14 +57,26 @@ function convertiraJson(markdown) {
     // Crear el objeto
     const question = {
       question: questionText,
-      codeExamples: codeExampless,
+      codeExamples,
       answersOptions,
-      //insertar url
+      urlFont: MARKDOWN_URL
     
     };
 
     questions.push(question); // Añadimos al array
   }
+  console.log(questions.length)
+
+    //Crea la carpeta ListaJson si no existe
+    const path = 'ListaJson';
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    
+    // Guardar el array de objetos en un archivo JSON
+    fs.writeFileSync(`ListaJson/${titulo}.json`, JSON.stringify(questions, null, 2));
+    console.log(`Se convirtió a JSON y se guardó en ${titulo}.json`);
+}
 
   //funcion que crea el array de opciones, poniendo las tres incorreectas primero y la correcta (True) al final
   function getAnswersOptions (correctAnswers, incorrectAnswers){
@@ -73,23 +85,9 @@ function convertiraJson(markdown) {
     return answersOptions
   };
 
-  //Crea el documento final
-  const document =[{
-    
-    questions
-  }]
 
-  //Crea la carpeta ListaJson si no existe
-  const path = 'ListaJson';
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
-  }
   
-  // Guardar el array de objetos en un archivo JSON
-  fs.writeFileSync(`ListaJson/${titulo}.json`, JSON.stringify(document, null, 2));
-  console.log(`Se convirtió a JSON y se guardó en ${titulo}.json`);
-  
-}
+
 
 // Ejecutar la descarga y conversión
 descargarMarkdown();
