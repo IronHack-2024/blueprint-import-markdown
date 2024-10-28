@@ -44,7 +44,6 @@ function convertiraJson(markdown) {
   while ((match = questionRegex.exec(markdown)) !== null) {
     const questionBlock = match[0]; // Bloque de preguntas
     let questionText = questionBlock.replace(/#### Q\d+\s*./, '').split('\n')[0].trim(); // Quitar la primera parte
-    // questionText = questionText.replace('?', ' ?'); // Asegurar espacio antes del signo de interrogación
     
     // Bloques de código
     const codeExampless = [...questionBlock.matchAll(codeExamplesRegex)].map(m => m[1]); // Bloque de ejercicios en preguntas
@@ -59,7 +58,8 @@ function convertiraJson(markdown) {
     const question = {
       question: questionText,
       codeExamples: codeExampless,
-      answersOptions
+      answersOptions,
+      //insertar url
     
     };
 
@@ -75,7 +75,7 @@ function convertiraJson(markdown) {
 
   //Crea el documento final
   const document =[{
-    urlFont: MARKDOWN_URL,
+    
     questions
   }]
 
