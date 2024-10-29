@@ -59,7 +59,7 @@ function convertiraJson(markdown) {
       question: questionText,
       codeExamples,
       answersOptions,
-      urlFont: MARKDOWN_URL
+      urlSource: MARKDOWN_URL
     
     };
 
